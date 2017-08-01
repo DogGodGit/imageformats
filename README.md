@@ -1,6 +1,8 @@
 ImageFormats
 ============
 
+[![Build status](https://ci.appveyor.com/api/projects/status/rr5vcu6bmala3oj9?svg=true)](https://ci.appveyor.com/project/redmanmale/imageformats)
+
 .NET modules for decoding obscure graphics formats:
 
 - .PPM, .PGM, .PBM (Netpbm images)
