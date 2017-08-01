@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ImageFormats")]
-[assembly: AssemblyCopyright("Copyright © Dmitry Brant 2013")]
+[assembly: AssemblyCopyright("Copyright © Dmitry Brant 2013-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
