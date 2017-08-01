@@ -7,7 +7,7 @@
     <ProjectGuid>{873B8031-6C75-47B4-83D0-8D1A05E8D938}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImageFormats</RootNamespace>
+    <RootNamespace>DmitryBrant.ImageFormats</RootNamespace>
     <AssemblyName>ImageFormats</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -37,7 +37,7 @@
   <ItemGroup>
     <Compile Include="CutReader.cs" />
     <Compile Include="DicomReader.cs" />
-    <Compile Include="Picture.cs" />
+    <Compile Include="BitmapExtensions.cs" />
     <Compile Include="PcxReader.cs" />
     <Compile Include="PnmReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

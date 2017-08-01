@@ -1,4 +1,4 @@
-imageformats
+ImageFormats
 ============
 
 .NET modules for decoding obscure graphics formats:

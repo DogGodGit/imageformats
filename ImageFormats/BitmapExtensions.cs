@@ -29,7 +29,7 @@ limitations under the License.
 namespace DmitryBrant.ImageFormats
 {
 
-    public static class Picture
+    public static class BitmapExtensions
     {
 
         /// <summary>
