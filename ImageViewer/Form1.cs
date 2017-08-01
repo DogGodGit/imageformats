@@ -1,8 +1,9 @@
-﻿using ImageViewer.Properties;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using DmitryBrant.ImageFormats;
+using DmitryBrant.ImageViewer.Properties;
 
 /*
 
@@ -27,7 +28,7 @@ limitations under the License.
 
 */
 
-namespace ImageViewer
+namespace DmitryBrant.ImageViewer
 {
     public partial class Form1 : Form
     {
@@ -66,8 +67,7 @@ namespace ImageViewer
         {
             try
             {
-                Bitmap bmp = null;
-                bmp = DmitryBrant.ImageFormats.Picture.Load(fileName);
+                var bmp = BitmapExtensions.Load(fileName);
                 
                 if (bmp == null)
                 {

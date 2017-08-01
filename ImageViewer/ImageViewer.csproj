@@ -7,7 +7,7 @@
     <ProjectGuid>{E918372C-0F3C-41F1-8A5B-EF4ED136C824}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImageViewer</RootNamespace>
+    <RootNamespace>DmitryBrant.ImageViewer</RootNamespace>
     <AssemblyName>ImageViewer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -70,7 +70,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="ImageFormats\ImageFormats.csproj">
+    <ProjectReference Include="..\ImageFormats\ImageFormats.csproj">
       <Project>{873b8031-6c75-47b4-83d0-8d1a05e8d938}</Project>
       <Name>ImageFormats</Name>
     </ProjectReference>

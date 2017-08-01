@@ -1,4 +1,4 @@
-﻿namespace ImageViewer
+﻿namespace DmitryBrant.ImageViewer
 {
     partial class Form1
     {
