@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ImageFormats</id>
+    <version>$version$</version>
+    <title>ImageFormats</title>
+    <authors>Dmitry Brant, redmanmale</authors>
+    <owners>redmanmale</owners>
+    <licenseUrl>https://github.com/redmanmale/imageformats/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/redmanmale/imageformats</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Library for decoding obscure graphics formats, such as Targa (.TGA), Sun raster (.RAS, .SUN), ZSoft (.PCX), Netpbm (.PPM, .PGM, .PBM, .PNM), SGI, and DICOM.</description>
+    <copyright>Copyright (c) 2017 redmanmale</copyright>
+    <tags>decoding, graphics, images, library, targa, tga, ras, sun, zsoft, pcx, netpbm, ppm, pgm, pbm, pnm, sgi, dicom</tags>
+  </metadata>
+</package>
