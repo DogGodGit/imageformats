@@ -1,7 +1,6 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
-using System.Text;
 
 /*
 
@@ -11,6 +10,8 @@ individual source code files for each image type for more information.
 
 Copyright 2013-2016 Dmitry Brant
 http://dmitrybrant.com
+
+Copyright 2017 redmanmale
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -28,10 +29,8 @@ limitations under the License.
 
 namespace DmitryBrant.ImageFormats
 {
-
     public static class BitmapExtensions
     {
-
         /// <summary>
         /// Load a file into a standard Bitmap object. Will automatically
         /// detect the format of the image.
@@ -41,37 +40,41 @@ namespace DmitryBrant.ImageFormats
         /// not be decoded by any of the formats known to this library.</returns>
         public static Bitmap Load(string fileName)
         {
-            Bitmap bmp = null;
-            using (FileStream f = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            Bitmap bitmap;
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                bmp = Load(f);
+                bitmap = Load(fileStream);
+
+                if (bitmap != null)
+                {
+                    return bitmap;
+                }
+
+                var ext = Path.GetExtension(fileName)?.ToLowerInvariant();
+                if (string.IsNullOrWhiteSpace(ext))
+                {
+                    return null;
+                }
+
+                if (ext.EndsWith("tga"))
+                {
+                    bitmap = TgaReader.Load(fileStream);
+                }
+                else if (ext.EndsWith("cut"))
+                {
+                    bitmap = CutReader.Load(fileStream);
+                }
+                else if (ext.EndsWith("sgi") || ext.EndsWith("rgb") || ext.EndsWith("bw"))
+                {
+                    bitmap = SgiReader.Load(fileStream);
+                }
+                else if (ext.EndsWith("xpm"))
+                {
+                    bitmap = XpmReader.Load(fileStream);
+                }
             }
 
-            if (bmp == null)
-            {
-                if (Path.GetExtension(fileName).ToLower().Contains("tga"))
-                    bmp = TgaReader.Load(fileName);
-            }
-
-            if (bmp == null)
-            {
-                if (Path.GetExtension(fileName).ToLower().Contains("cut"))
-                    bmp = CutReader.Load(fileName);
-            }
-
-            if (bmp == null)
-            {
-                if (Path.GetExtension(fileName).ToLower().Contains("sgi") || Path.GetExtension(fileName).ToLower().Contains("rgb") || Path.GetExtension(fileName).ToLower().Contains("bw"))
-                    bmp = SgiReader.Load(fileName);
-            }
-
-            if (bmp == null)
-            {
-                if (Path.GetExtension(fileName).ToLower().Contains("xpm"))
-                    bmp = XpmReader.Load(fileName);
-            }
-
-            return bmp;
+            return bitmap;
         }
 
         /// <summary>
@@ -90,19 +93,19 @@ namespace DmitryBrant.ImageFormats
             stream.Read(header, 0, header.Length);
             stream.Seek(0, SeekOrigin.Begin);
 
-            if ((header[0] == 0xA) && ((header[1] >= 0x3) && (header[1] <= 0x5)) && (header[2] == 0x1) && (header[4] == 0) && (header[5] == 0))
+            if (header[0] == 0xA && header[1] >= 0x3 && header[1] <= 0x5 && header[2] == 0x1 && header[4] == 0 && header[5] == 0)
             {
                 bmp = PcxReader.Load(stream);
             }
-            else if ((header[0] == 'P') && ((header[1] >= '1') && (header[1] <= '6')) && ((header[2] == 0xA) || (header[2] == 0xD)))
+            else if (header[0] == 'P' && header[1] >= '1' && header[1] <= '6' && (header[2] == 0xA || header[2] == 0xD))
             {
                 bmp = PnmReader.Load(stream);
             }
-            else if ((header[0] == 0x59) && (header[1] == 0xa6) && (header[2] == 0x6a) && (header[3] == 0x95))
+            else if (header[0] == 0x59 && header[1] == 0xa6 && header[2] == 0x6a && header[3] == 0x95)
             {
                 bmp = RasReader.Load(stream);
             }
-            else if ((header[0x80] == 'D') && (header[0x81] == 'I') && (header[0x82] == 'C') && (header[0x83] == 'M'))
+            else if (header[0x80] == 'D' && header[0x81] == 'I' && header[0x82] == 'C' && header[0x83] == 'M')
             {
                 bmp = DicomReader.Load(stream);
             }
@@ -110,5 +113,13 @@ namespace DmitryBrant.ImageFormats
             return bmp;
         }
 
+        public static byte[] ToBytes(this Bitmap bitmap, ImageFormat imageFormat)
+        {
+            using (var ms = new MemoryStream())
+            {
+                bitmap.Save(ms, imageFormat);
+                return ms.ToArray();
+            }
+        }
     }
 }
