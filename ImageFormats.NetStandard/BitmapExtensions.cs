@@ -78,6 +78,19 @@ namespace ImageFormats.NetStandard
         }
 
         /// <summary>
+        /// Load a file into a standard Bitmap object. Will automatically
+        /// detect the format of the image.
+        /// </summary>
+        /// <param name="fileName">Name of the file to load.</param>
+        /// <returns>Bitmap byte array.</returns>
+        public static byte[] Load(ref string fileName)
+        {
+            Bitmap bitmap = Load(fileName);
+
+            return bitmap.ToBytes(ImageFormat.Bmp);
+        }
+
+        /// <summary>
         /// Create a standard Bitmap object from a Stream. Will automatically
         /// detect the format of the image.
         /// </summary>
@@ -86,13 +99,12 @@ namespace ImageFormats.NetStandard
         /// not be decoded by any of the formats known to this library.</returns>
         public static Bitmap Load(Stream stream)
         {
-            Bitmap bmp = null;
-
             //read the first few bytes of the file to determine what format it is...
             byte[] header = new byte[256];
             stream.Read(header, 0, header.Length);
             stream.Seek(0, SeekOrigin.Begin);
 
+            Bitmap bmp;
             if (header[0] == 0xA && header[1] >= 0x3 && header[1] <= 0x5 && header[2] == 0x1 && header[4] == 0 && header[5] == 0)
             {
                 bmp = PcxReader.Load(stream);
@@ -109,10 +121,33 @@ namespace ImageFormats.NetStandard
             {
                 bmp = DicomReader.Load(stream);
             }
+            else
+            {
+                bmp = (Bitmap)Image.FromStream(stream);
+            }
 
             return bmp;
         }
 
+        /// <summary>
+        /// Create a standard Bitmap object from a Stream. Will automatically
+        /// detect the format of the image.
+        /// </summary>
+        /// <param name="stream">Stream from which the image will be read.</param>
+        /// <returns>Bitmap byte array.</returns>
+        public static byte[] Load(ref Stream stream)
+        {
+            Bitmap bitmap = Load(stream);
+
+            return bitmap.ToBytes(ImageFormat.Bmp);
+        }
+
+        /// <summary>
+        /// Bitmap To Bytes
+        /// </summary>
+        /// <param name="bitmap">Bitmap that contains the decoded image</param>
+        /// <param name="imageFormat">image Format(.Bmp,.Png,...)</param>
+        /// <returns>Bitmap byte array</returns>
         public static byte[] ToBytes(this Bitmap bitmap, ImageFormat imageFormat)
         {
             using (var ms = new MemoryStream())
