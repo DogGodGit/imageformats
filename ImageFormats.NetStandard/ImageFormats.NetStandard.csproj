@@ -11,7 +11,7 @@
     <Description>Library for decoding obscure graphics formats, such as Targa (.TGA), Sun raster (.RAS, .SUN), ZSoft (.PCX), Netpbm (.PPM, .PGM, .PBM, .PNM), .SGI, and DICOM.
 用于解码特殊的图形格式的库，例如Targa（.TGA），Sun栅格（.RAS，.SUN），ZSoft（.PCX），Netpbm（.PPM，.PGM，.PBM，.PNM）、. SGI和 DICOM。</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>ImageFormats.NetStandard,DogGod</Authors>
     <Product>ImageFormats.NetStandard,DogGod</Product>
   </PropertyGroup>

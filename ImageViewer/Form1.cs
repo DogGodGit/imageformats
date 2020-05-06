@@ -1,8 +1,6 @@
 ﻿using DmitryBrant.ImageFormats;
 using DmitryBrant.ImageViewer.Properties;
 using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.Windows.Forms;
 
 /*
@@ -51,7 +49,7 @@ namespace DmitryBrant.ImageViewer
             OpenFile(files[0]);
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var openDlg = new OpenFileDialog
             {
@@ -70,19 +68,6 @@ namespace DmitryBrant.ImageViewer
             try
             {
                 var bmp = BitmapExtensions.Load(fileName);
-
-                if (bmp == null)
-                {
-                    //try loading the file natively...
-                    try
-                    {
-                        bmp = (Bitmap)Image.FromFile(fileName);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e.Message);
-                    }
-                }
 
                 pictureBox1.Image = bmp ?? throw new ApplicationException(Resources.errorLoadFailed);
                 pictureBox1.Size = bmp.Size;

@@ -41,41 +41,32 @@ namespace DmitryBrant.ImageFormats
         public static Bitmap Load(string fileName)
         {
             Bitmap bitmap;
-            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+
+            var ext = Path.GetExtension(fileName)?.ToLowerInvariant();
+            if (string.IsNullOrWhiteSpace(ext))
             {
-                bitmap = Load(fileStream);
+                return null;
+            }
 
-                if (bitmap != null)
-                {
-                    return bitmap;
-                }
-
-                var ext = Path.GetExtension(fileName)?.ToLowerInvariant();
-                if (string.IsNullOrWhiteSpace(ext))
-                {
-                    return null;
-                }
-
-                if (ext.EndsWith("tga"))
-                {
-                    bitmap = TgaReader.Load(fileStream);
-                }
-                else if (ext.EndsWith("cut"))
-                {
-                    bitmap = CutReader.Load(fileStream);
-                }
-                else if (ext.EndsWith("sgi") || ext.EndsWith("rgb") || ext.EndsWith("bw"))
-                {
-                    bitmap = SgiReader.Load(fileStream);
-                }
-                else if (ext.EndsWith("xpm"))
-                {
-                    bitmap = XpmReader.Load(fileStream);
-                }
-                else
-                {
-                    bitmap = (Bitmap)Image.FromFile(fileName);
-                }
+            if (ext.EndsWith("tga"))
+            {
+                bitmap = TgaReader.Load(fileName);
+            }
+            else if (ext.EndsWith("cut"))
+            {
+                bitmap = CutReader.Load(fileName);
+            }
+            else if (ext.EndsWith("sgi") || ext.EndsWith("rgb") || ext.EndsWith("bw"))
+            {
+                bitmap = SgiReader.Load(fileName);
+            }
+            else if (ext.EndsWith("xpm"))
+            {
+                bitmap = XpmReader.Load(fileName);
+            }
+            else
+            {
+                bitmap = (Bitmap)Image.FromFile(fileName);
             }
 
             return bitmap;
