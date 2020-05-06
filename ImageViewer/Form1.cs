@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DmitryBrant.ImageFormats;
+using DmitryBrant.ImageViewer.Properties;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using DmitryBrant.ImageFormats;
-using DmitryBrant.ImageViewer.Properties;
 
 /*
 
@@ -53,33 +53,38 @@ namespace DmitryBrant.ImageViewer
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var openDlg = new OpenFileDialog();
-            openDlg.DefaultExt = ".*";
-            openDlg.CheckFileExists = true;
-            openDlg.Title = Resources.openDlgTitle;
-            openDlg.Filter = "All Files (*.*)|*.*";
-            openDlg.FilterIndex = 1;
+            var openDlg = new OpenFileDialog
+            {
+                DefaultExt = ".*",
+                CheckFileExists = true,
+                Title = Resources.openDlgTitle,
+                Filter = "All Files (*.*)|*.*",
+                FilterIndex = 1
+            };
             if (openDlg.ShowDialog() == DialogResult.Cancel) return;
             OpenFile(openDlg.FileName);
         }
-        
+
         private void OpenFile(string fileName)
         {
             try
             {
                 var bmp = BitmapExtensions.Load(fileName);
-                
+
                 if (bmp == null)
                 {
                     //try loading the file natively...
-                    try { bmp = (Bitmap)Bitmap.FromFile(fileName); }
-                    catch (Exception e) { Debug.WriteLine(e.Message); }
+                    try
+                    {
+                        bmp = (Bitmap)Image.FromFile(fileName);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
                 }
 
-                if (bmp == null)
-                    throw new ApplicationException(Resources.errorLoadFailed);
-
-                pictureBox1.Image = bmp;
+                pictureBox1.Image = bmp ?? throw new ApplicationException(Resources.errorLoadFailed);
                 pictureBox1.Size = bmp.Size;
             }
             catch (Exception e)
@@ -87,6 +92,5 @@ namespace DmitryBrant.ImageViewer
                 MessageBox.Show(this, e.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
-
     }
 }

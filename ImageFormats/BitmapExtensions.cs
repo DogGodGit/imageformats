@@ -72,6 +72,10 @@ namespace DmitryBrant.ImageFormats
                 {
                     bitmap = XpmReader.Load(fileStream);
                 }
+                else
+                {
+                    bitmap = (Bitmap)Image.FromFile(fileName);
+                }
             }
 
             return bitmap;
@@ -86,13 +90,12 @@ namespace DmitryBrant.ImageFormats
         /// not be decoded by any of the formats known to this library.</returns>
         public static Bitmap Load(Stream stream)
         {
-            Bitmap bmp = null;
-
             //read the first few bytes of the file to determine what format it is...
             byte[] header = new byte[256];
             stream.Read(header, 0, header.Length);
             stream.Seek(0, SeekOrigin.Begin);
 
+            Bitmap bmp;
             if (header[0] == 0xA && header[1] >= 0x3 && header[1] <= 0x5 && header[2] == 0x1 && header[4] == 0 && header[5] == 0)
             {
                 bmp = PcxReader.Load(stream);
@@ -108,6 +111,10 @@ namespace DmitryBrant.ImageFormats
             else if (header[0x80] == 'D' && header[0x81] == 'I' && header[0x82] == 'C' && header[0x83] == 'M')
             {
                 bmp = DicomReader.Load(stream);
+            }
+            else
+            {
+                bmp = (Bitmap)Image.FromStream(stream);
             }
 
             return bmp;

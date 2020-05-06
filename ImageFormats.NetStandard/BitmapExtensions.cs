@@ -72,6 +72,10 @@ namespace ImageFormats.NetStandard
                 {
                     bitmap = XpmReader.Load(fileStream);
                 }
+                else
+                {
+                    bitmap = (Bitmap)Image.FromFile(fileName);
+                }
             }
 
             return bitmap;
